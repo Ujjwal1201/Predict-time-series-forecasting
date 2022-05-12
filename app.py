@@ -1,5 +1,5 @@
 from werkzeug.utils import secure_filename
-from model_orm import user
+from model_orm import User
 import os
 from sqlalchemy.engine import create_engine
 from sqlalchemy.orm import sessionmaker
@@ -47,9 +47,9 @@ def home():
     return render_template('home.html')
 
 def allowed_files(filename):
-    return '.' in filename and filename.rsplit('.', 1)[1].lower() in app.config['ALLOWED_EXTENSIONS']
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in {"csv","xlsx","json"}
 
-@app.route('/upload', methods=['GET','POST'])
+@app.route('/uploads', methods=['GET','POST'])
 def uploadImage():
     if request.method == 'POST':
         print(request.files)
@@ -62,9 +62,10 @@ def uploadImage():
             return redirect(request.url)
         if file and allowed_files(file.filename):
             print(file.filename)
+            db = opendb()
             filename = secure_filename(file.filename)
-            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename ))
-            upload = DataSet(img =f"/static/uploads/{filename}", imgtype = os.path.splitext(file.filename)[1],user_id=user.id)
+            file.save(os.path.join("/static/uploads", filename ))
+            upload = DataSet(img =f"/static/uploads/{filename}", imgtype = os.path.splitext(file.filename)[1],user_id=User.id)
             db.session.add(upload)
             db.session.commit()
             flash('file uploaded and saved','success')
