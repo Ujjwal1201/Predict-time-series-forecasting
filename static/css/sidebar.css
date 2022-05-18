@@ -16,7 +16,7 @@ body {
     overflow-x: auto;
     overflow-y: hidden;
   }
-  
+/*   
   .b-example-divider {
     flex-shrink: 0;
     width: .5rem;
@@ -86,7 +86,7 @@ body {
   }
   
   .fw-semibold { font-weight: 600; }
-  .lh-tight { line-height: 1.25; }
+  .lh-tight { line-height: 1.25; } */
   *{
     margin: 0;
       padding: 0;
@@ -96,8 +96,8 @@ body {
     }
     .sidebar{
       position: fixed;
-      left: -250px;
-      width: 250px;
+      left: -280px;
+      width: 280px;
       height: 100%;
       background: #042331;
       transition: all .5s ease;
@@ -145,20 +145,20 @@ body {
       top: 25px;
       font-size: 35px;
       color: white;
-      padding: 6px 10px;
+      padding: 6px 12px;
       transform: all .5s;
     }
     label #cancel{
       z-index: 1111;
       left: -195px;
-      top: 17px;
-      font-size: 30px;
+      top: 10px;
+      font-size: 25px;
       color: #0a5275;
       padding: 4px 9px;
       transition: all .5s ease;
     }
     #check:checked ~ .sidebar{
-      left: 0;
+      right: 0;
     }
     #check:checked ~ label #btn{
       left: 250px;
@@ -166,8 +166,10 @@ body {
       pointer-events: none;
     }
     #check:checked ~ label #cancel{
-      left: 195px;
+      left: 10px;
+      transition: all .10s;
+      t
     }
-    #check:checked ~ section{
+    #check:checked ~ *{
       margin-left: 250px;
     }

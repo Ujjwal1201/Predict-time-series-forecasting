@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css" integrity="sha384-r4NyP46KrjDleawBgD5tp8Y7UzmLA05oM1iAEQ17CSuDqnUK2+k9luXQOfXJCJ4I" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/js/bootstrap.min.js" integrity="sha384-oesi62hOLfzrys4LxRF63OJCXdXDipiYWBnvTl9Y9/TRlw5xlKIEHpNyvvDShgf/" crossorigin="anonymous"></script>
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
     <style>
         .bd-placeholder-img {
           font-size: 1.125rem;
@@ -35,6 +36,13 @@
 
 </head>
 <body>
+    
+<input type="checkbox" id="check">
+<label for="check">
+<i class="fas fa-bars" id="btn"></i>
+<i id="cancel">❌</i>
+</label>
+<div class="sidebar">
     <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
         <symbol id="bootstrap" viewBox="0 0 118 94">
           <title>PREDICT</title>
@@ -94,6 +102,7 @@
         </symbol>
       </svg>
     <main>
+    
         <div class="d-flex flex-column flex-shrink-0 p-3 text-white " style="width: 280px; background-color: rgb(30 42 57 / 44%);">
             <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
                 <svg class="bi me-2" width="37" height="32"><use xlink:href=""></use></svg>
@@ -103,7 +112,7 @@
             <hr>
             <ul class="nav nav-pills flex-column mb-auto">
                 <li class="nav-item">
-                    <a href="/home" class="nav-link active" aria-current="page">
+                    <a href="/home" class="nav-link text-white" aria-current="page">
                         <svg class="bi me-2" width="16" height="16"><use xlink:href="Home"></use></svg>
                         Home
                     </a>
@@ -135,6 +144,7 @@
             
             </div>
         </div>
+      </div>
         <div class="b-example-divider"></div>
         <div class="container">            
             {% block body %} {% endblock  %}

@@ -40,7 +40,7 @@ def login ():
 
 @app.route('/register', methods=['GET','POST'])
 def register():
-    return render_template('register.whtml')
+    return render_template('register.html')
 
 @app.route('/home')
 def home():
