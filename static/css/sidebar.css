@@ -27,13 +27,9 @@ body {
     box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
   }
   
-  .bi {
-    vertical-align: -.125em;
-    pointer-events: none;
-    fill: currentColor;
-  }
+/*
   
-  .dropdown-toggle { outline: 0; }
+  /* .dropdown-toggle { outline: 0; }
   
   .nav-flush .nav-link {
     border-radius: 0;
@@ -86,7 +82,7 @@ body {
   }
   
   .fw-semibold { font-weight: 600; }
-  .lh-tight { line-height: 1.25; } */
+  .lh-tight { line-height: 1.25; } */ 
   *{
     margin: 0;
       padding: 0;
@@ -117,7 +113,7 @@ body {
       line-height: 65px;
       font-size: 20px;
       color: white;
-      padding-left: 20px;
+      padding-left: 40px;
       box-sizing: border-box;
       border-top: 1px solid rgba(255,255,255,.1);
       border-bottom: 1px solid black;
@@ -168,8 +164,13 @@ body {
     #check:checked ~ label #cancel{
       left: 10px;
       transition: all .10s;
-      t
     }
     #check:checked ~ *{
       margin-left: 250px;
+    }
+
+    .bi {
+      vertical-align: -.125em;
+      pointer-events: none;
+      fill: currentColor;
     }
