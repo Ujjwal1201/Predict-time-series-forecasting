@@ -30,13 +30,24 @@
           background-attachment: fixed;
           background-size: cover;
         }
+        /* marquee {
+        width: 100%;
+        padding: 10px 2px;
+        background-color: rgb(255, 89, 194);
+      } */
+      footer{
+        position: relative;
+        left: 0;
+        top: 350px;
+        width: 100%;
+      }
       </style>
       <link rel="stylesheet" href="/static/css/sidebar.css">
     {% block css %} {% endblock %}
 
 </head>
 <body>
-    
+  <!-- <marquee behavior="alternate"> Predict The Time Series Forecasting</marquee> -->
 <input type="checkbox" id="check">
 <label for="check">
 <i id="btn"><svg class="bi me-2" width="30" height="40"><use xlink:href="#tools"></use></svg></i>
@@ -150,6 +161,16 @@
             {% block body %} {% endblock  %}
         </div>
     </main>
+
     {% block js %} {% endblock  %}
 </body>
+
+<footer class="bg-dark text-center text-lg-start">
+  <!-- Copyright -->
+  <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2); color: white;">
+    © 2022 Copyright:
+    <b>PREDICT</b> --The Time Series Forecasting
+  </div>
+  <!-- Copyright -->
+</footer>
 </html>
