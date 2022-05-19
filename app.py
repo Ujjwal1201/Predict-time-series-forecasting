@@ -1,3 +1,4 @@
+from requests import Session
 from werkzeug.utils import secure_filename
 from model_orm import User
 import os
@@ -11,7 +12,7 @@ app = Flask(__name__)
 app.secret_key = 'thisisaverysecretkey'
 
 def opendb():
-    engine = create_engine("sqlite:///db.sqlite")
+    engine = create_engine("sqlite:///model.sqlite")
     Session = sessionmaker(bind=engine)
     return Session()
 
@@ -28,19 +29,53 @@ def login ():
             return redirect('/')
         # more like this
         else:
-            session['isauth'] = True
-            session['id'] = True
-            session['name'] = True
-
-            flash('Login Successfull', 'success')
-            return redirect('/')
-
+            db = opendb()
+            query = db.query(User).filter(User.email == email).first()
+            if query is not None and query.password == Password:        
+                session['isauth'] = True
+                session['id'] = True
+                session['name'] = True
+                flash('Login Successfull', 'success')
+                return redirect('/uploads')
+            else:
+                flash('There was an error while Logging in.','danger')
     return render_template('login.html')
 
 
 @app.route('/register', methods=['GET','POST'])
 def register():
-    return render_template('register.html')
+    if request.method=='POST':
+        email = request.form.get('email')
+        username = request.form.get('username')
+        confirm_password = request.form.get('confirm_password')
+        password = request.form.get('password')
+        print(confirm_password, password, confirm_password==password)
+        if username and password and confirm_password and email:
+            if confirm_password != password:
+                flash('Password do not match','danger')
+                return redirect('/register')
+            else:
+                db =opendb()
+                
+                if db.query(User).filter(User.email==email).first() is not None:
+                    flash('Please use a different email address','danger')
+                    return redirect('/register')
+                elif db.query(User).filter(User.username==username).first() is not None:
+                    flash('Please use a different username','danger')
+                    return redirect('/register')
+                else:
+                    user = User(username=username, email=email, password=password)  
+                    db.add(user)
+                    db.commit()
+                    db.close()
+                    flash('Congratulations, you are now a registered user!','success')
+                    return redirect(url_for('login'))
+                
+        else:
+            flash('Fill all the fields','danger')
+            return redirect('/register')
+
+    return render_template('register.html', title='Sign Up page')
 
 @app.route('/home')
 def home():
