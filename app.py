@@ -72,7 +72,7 @@ def uploadImage():
             session['uploaded_file'] = f"/static/uploads/{filename}"
             return redirect(request.url)
         else:
-            flash('wrong file selected, only PNG and JPG images allowed','danger')
+            flash('wrong file selected, only csv, xlxs and json files allowed','danger')
             return redirect(request.url)
    
     return render_template('upload.html',title='upload new Image')
