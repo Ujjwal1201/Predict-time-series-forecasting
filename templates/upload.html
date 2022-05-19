@@ -4,6 +4,7 @@
 
 {% endblock %}
 {% block body %}
+import os
 
 <div class="container">
     <div class="row">
@@ -20,7 +21,7 @@
                 <div class="card-body" style="background-color: rgb(250, 250, 250);  font-family: 'Akaya Telivigala';font-size: 22px;">
                     <div class="form-group">
                       <label for="imageId">file</label>
-                      <input type="file" name="file" class="form-control-file" name="imageId" id="imageId" placeholder="browse the dataset" aria-describedby="imageHelp">
+                      <input type="file" name="file" class="form-control-file" name="filepath" id="filepath" placeholder="browse the dataset" aria-describedby="imageHelp">
                       
                     </div>
                 </div>
@@ -28,6 +29,8 @@
                     <button class="btn btn-primary">Upload</button>
                 </div>
             </form>
+            
+
         </div>
     </div>
         </div>
