@@ -95,7 +95,7 @@ body {
       left: -280px;
       width: 280px;
       height: 100%;
-      background: #042331;
+      background: #04233177;
       transition: all .5s ease;
     }
     .sidebar header{
@@ -132,16 +132,16 @@ body {
     label #btn,label #cancel{
       position: absolute;
       cursor: pointer;
-      background: #042331;
+      background: #6b159aec;
       border-radius: 6px;
 
     }
     label #btn{
       left: 22px;
       top: 25px;
-      font-size: 35px;
+      font-size: 25px;
       color: white;
-      padding: 6px 12px;
+      padding: 4px 10px;
       transform: all .5s;
     }
     label #cancel{
