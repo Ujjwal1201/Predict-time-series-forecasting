@@ -1,4 +1,3 @@
-from requests import Session
 from werkzeug.utils import secure_filename
 from model_orm import User
 import os
@@ -41,6 +40,9 @@ def login ():
                 flash('There was an error while Logging in.','danger')
     return render_template('login.html')
 
+# @app.route('/forgot ' ,methods=["GET","POST"])
+# def forgot():
+#     return render_template('forgot.html')
 
 @app.route('/register', methods=['GET','POST'])
 def register():
@@ -99,10 +101,12 @@ def uploadImage():
             print(file.filename)
             db = opendb()
             filename = secure_filename(file.filename)
-            file.save(os.path.join("/static/uploads", filename ))
-            upload = DataSet(img =f"/static/uploads/{filename}", imgtype = os.path.splitext(file.filename)[1],user_id=User.id)
-            db.session.add(upload)
-            db.session.commit()
+            path = os.path.join(os.getcwd(),"static/uploads", filename)
+            print(path)
+            file.save(path)
+            upload = DataSet(filename=filename,filepath =f"/static/uploads/{filename}", datatype = os.path.splitext(file.filename)[1],user_id=session.get('id',1))
+            db.add(upload)
+            db.commit()
             flash('file uploaded and saved','success')
             session['uploaded_file'] = f"/static/uploads/{filename}"
             return redirect(request.url)

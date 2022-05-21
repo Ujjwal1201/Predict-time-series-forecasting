@@ -22,9 +22,10 @@ class User(Base):
 class DataSet(Base):
     __tablename__="dataset"
     id=Column(Integer, primary_key=True)
-    filename=Column(String(100),nullable=False)
+    filename=Column(String,nullable=False)
     filepath=Column(String, nullable=False)
     datatype=Column(String,nullable=False)
+    user_id = Column(Integer,ForeignKey('users.id'))
     created_at=Column(DateTime,default=datetime.utcnow,nullable=False)
 
     def __rep__(self)->str:

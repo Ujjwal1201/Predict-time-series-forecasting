@@ -7,6 +7,7 @@
         font-family: 'Akaya Telivigala';font-size: 22px;
     }
 </style>
+{% include "notify.html" %}
 <div class="container">
     <div class="row">
         <div class="col-md-5 mx-auto">
@@ -22,17 +23,16 @@
                         <input type="text" class="form-control" id="username" name="username">
                     </div>
                     
-
                     <div class="mb-3">
                         <label for="email" class="form-label">E-mail</label>
                         <input type="email" class="form-control" id="email" name="email">
                     </div>
-
+                    
                     <div class="mb-3">
                         <label for="password" class="form-label">Password</label>
                         <input type="Password" class="form-control" id="password" name="password">
                     </div>
-
+                    
                     <div class="mb-3">
                         <label for="confirm_password" class="form-label">Confirm Password</label>
                         <input type="password" class="form-control" id="confirm_password" name="confirm_password">
@@ -42,9 +42,8 @@
                         <button type="submit" class="btn btn-primary"text-align="center">Submit</button>
                     </div>
                 </div>
-            </div>
-        </form>
+            </form>
+        </div>
     </div>
-    
 </div>
 {% endblock %}
