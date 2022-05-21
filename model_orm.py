@@ -12,10 +12,8 @@ class User(Base):
     __tablename__="users"
     id= Column(Integer, primary_key=True)
     username= Column(String(20), nullable=False)
-    name= Column(String(30), nullable=False)
     email=Column(String(40), unique=True, nullable=False)
     password=Column(String(15), unique=True, nullable=False)
-    confirm_passqord= Column(String(15), unique=True, nullable=False)
     created_at=Column(DateTime,default=datetime.utcnow,nullable=False)
 
     def __rep__(self)->str:
