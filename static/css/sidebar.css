@@ -92,8 +92,8 @@ body {
     }
     .sidebar{
       position: fixed;
-      left: -280px;
-      width: 280px;
+      left: -300px;
+      width: 300px;
       height: 100%;
       background: #04233177;
       transition: all .5s ease;
@@ -129,10 +129,18 @@ body {
     #check{
       display: none;
     }
-    label #btn,label #cancel{
+    label #btn{
       position: absolute;
       cursor: pointer;
       background: #6b159aec;
+      border-radius: 6px;
+
+    }
+
+    label #cancel{
+      position: absolute;
+      cursor: pointer;
+      background: #dce293ec;
       border-radius: 6px;
 
     }
@@ -157,7 +165,7 @@ body {
       right: 0;
     }
     #check:checked ~ label #btn{
-      left: 250px;
+      left: 260px;
       opacity: 0;
       pointer-events: none;
     }
@@ -166,7 +174,7 @@ body {
       transition: all .10s;
     }
     #check:checked ~ *{
-      margin-left: 250px;
+      margin-left: 260px;
     }
 
     .bi {

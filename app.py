@@ -18,8 +18,8 @@ def opendb():
 
 @app.route('/', methods=['GET','POST'])
 def login ():
-    if session['isauth']:
-        return redirect('/home')
+    # if session['isauth']:
+    #     return redirect('/home')
     if request.method == 'POST':
         email = request.form.get('email')
         Password  = request.form.get('Password')
@@ -29,6 +29,8 @@ def login ():
         elif not Password:
             flash('Password is required', 'danger')
             return redirect('/')
+        elif session['isauth']:
+            return redirect('/home')
         # more like this
         else:
             db = opendb()
