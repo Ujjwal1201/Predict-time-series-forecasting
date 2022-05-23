@@ -1,3 +1,4 @@
+from requests import Session
 from werkzeug.utils import secure_filename
 from model_orm import User
 import os
