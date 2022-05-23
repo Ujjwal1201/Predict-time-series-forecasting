@@ -66,6 +66,9 @@ def register():
                 elif db.query(User).filter(User.username==username).first() is not None:
                     flash('Please use a different username','danger')
                     return redirect('/register')
+                elif db.query(User).filter(User.password==password).first() is not None:
+                    flash('Please use a different password','danger')
+                    return redirect('/register')
                 else:
                     user = User(username=username, email=email, password=password)  
                     db.add(user)
