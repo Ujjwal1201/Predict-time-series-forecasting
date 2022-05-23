@@ -1,10 +1,10 @@
-from requests import Session
 from werkzeug.utils import secure_filename
 from model_orm import User
 import os
 from sqlalchemy.engine import create_engine
 from sqlalchemy.orm import sessionmaker
 from flask import Flask,render_template, request, flash, redirect, session, url_for
+import pandas as pd
 
 from model_orm import DataSet
 
@@ -18,6 +18,8 @@ def opendb():
 
 @app.route('/', methods=['GET','POST'])
 def login ():
+    if session['isauth']:
+        return redirect('/home')
     if request.method == 'POST':
         email = request.form.get('email')
         Password  = request.form.get('Password')
@@ -128,27 +130,42 @@ def filelisting():
     db.close()
     return render_template('files.html', filelist=filelist)
 
-@app.route('/logout',methods=['GET','POST'])
+@app.route('/logout')
 def logout():
     if "isauth" in session:
         session.pop('isauth')
     return redirect ("/")
 
 
-@app.route('path')
+@app.route('/path')
 def path():
     return render_template('expression')
 
 @app.route('/predict/<int:id>')
 def predict(id):
     sess=opendb()
-    try:
-        sess.query(DataSet).filter(DataSet.id==id)
-        sess.commit()
-        sess.close()
-        return redirect('/report')
-    except Exception as e:
-        return f"There was a problem Submitting {e}"
+    data = sess.query(DataSet).filter(DataSet.id==id).first()
+    sess.commit()
+    print(data)
+    df = pd.read_csv(data.filepath[1:])
+    sess.close()
+    columns = df.columns.tolist()
+    return render_template('column_selector.html',data=data,df = df.head().to_html(),col1 = columns,col2=columns)
+
+@app.route('/train',methods =['GET','POST'])
+def train():
+    if request.method == "POST":
+        session['col1'] = request.form.get('col1')
+        session['filepath'] = request.form.get('filepath')
+        session['col2'] = request.form.get('col2')
+        flash("columns selected",'success')
+        return redirect('/train')
+    
+    return render_template('train.html')
+    
+@app.route('/train_timeseries')
+def train_timeseries():
+    return redirect('/train')
 
 @app.route('/delete/<int:id>')
 def delete(id):
@@ -160,7 +177,6 @@ def delete(id):
         return redirect('/files')
     except Exception as e:
         return f"There was a problem while deleting {e}"
-
 
 
 
