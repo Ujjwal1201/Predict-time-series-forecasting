@@ -1,9 +1,10 @@
+from requests import Session
 from werkzeug.utils import secure_filename
 from model_orm import User
 import os
 from sqlalchemy.engine import create_engine
 from sqlalchemy.orm import sessionmaker
-from flask import Flask, render_template, request, flash, redirect, session, url_for
+from flask import Flask,render_template, request, flash, redirect, session, url_for
 
 from model_orm import DataSet
 
@@ -117,11 +118,48 @@ def uploadImage():
     return render_template('upload.html',title='upload new Image')
 
 
+@app.route('/files')
+def filelisting():
+    db = opendb()
+    filelist = db.query(DataSet).all()
+    db.close()
+    return render_template('files.html', filelist=filelist)
+
 @app.route('/logout',methods=['GET','POST'])
 def logout():
     if "isauth" in session:
         session.pop('isauth')
     return redirect ("/")
+
+
+@app.route('path')
+def path():
+    return render_template('expression')
+
+@app.route('/predict/<int:id>')
+def predict(id):
+    sess=opendb()
+    try:
+        sess.query(DataSet).filter(DataSet.id==id)
+        sess.commit()
+        sess.close()
+        return redirect('/report')
+    except Exception as e:
+        return f"There was a problem Submitting {e}"
+
+@app.route('/delete/<int:id>')
+def delete(id):
+    sess=opendb()
+    try:
+        sess.query(DataSet).filter(DataSet.id==id).delete()
+        sess.commit()
+        sess.close()
+        return redirect('/files')
+    except Exception as e:
+        return f"There was a problem while deleting {e}"
+
+
+
 
 if __name__ == '__main__':
   app.run(debug=True)
