@@ -17,7 +17,7 @@ def opendb():
     return Session()
 
 @app.route('/', methods=['GET','POST'])
-def login ():
+def login():
     # if session['isauth']:
     #     return redirect('/home')
     if request.method == 'POST':
