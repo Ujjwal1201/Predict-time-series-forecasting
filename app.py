@@ -5,6 +5,7 @@ from sqlalchemy.engine import create_engine
 from sqlalchemy.orm import sessionmaker
 from flask import Flask,render_template, request, flash, redirect, session, url_for
 import pandas as pd
+import timeseries as ts
 
 from model_orm import DataSet
 
@@ -168,6 +169,18 @@ def train():
     
 @app.route('/train_timeseries')
 def train_timeseries():
+    xc = request.args.get('x')
+    yc = request.args.get('y')
+    f = request.args.get('f')[1:]
+    tdf = ts.load_csv(f,xc,yc)
+    print('dataframe loaded')
+    # print(tdf.head())
+    X,y = ts.create_features(tdf,yc)
+    # print(X.head(),y.head())
+    X_train,X_test,y_train,y_test = ts.get_data(tdf,yc)
+    model = ts.train(X_train,X_test,y_train,y_test)
+    print('model trained')  
+    ts.predictTimeseries(model,tdf,yc)
     return redirect('/train')
 
 @app.route('/delete/<int:id>')

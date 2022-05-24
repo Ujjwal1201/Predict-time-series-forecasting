@@ -24,10 +24,9 @@ def create_features(df, label=None):
     
     X = df[['hour','dayofweek','quarter','month','year',
            'dayofyear','dayofmonth','weekofyear']]
-    if label:
-        y = df[label]
-        return X, y
-    return X
+    y = df[label]
+    return X, y
+    
 
 def load_csv(filepath,col1,col2):
     df  = pd.read_csv(filepath,index_col=col1,parse_dates=[0])
@@ -60,16 +59,17 @@ def plot_features_important(model,height=.9):
     title= "importance of features"
     plt.savefig(f'static/graphs/{title}.png',bbox_inches='tight')
 
-def predict(reg, tdf, y_col):
+def predictTimeseries(reg, tdf, y_col):
     X,y = create_features(tdf,y_col)
     X_train, X_test, y_train, y_test = train_test_split(X,y,test_size=.3,shuffle=False)
     X_test['Prediction'] = reg.predict(X_test)
-    X_test['Original'] = y_test
+    X_test[y_col] = y_test
     f, ax = plt.subplots(1)
     f.set_figheight(5)
     f.set_figwidth(15)
     X_train['Original'] = y_train
     X_all = pd.concat([X_test,X_train],sort=False)
+    print(X_all.head())
     X_all[[y_col,'Prediction']].plot(ax=ax,style=['-','.'])
     ax.set_ylim(X_all[y_col].max()*10)
     plt.suptitle(' Forecast vs Actuals')
