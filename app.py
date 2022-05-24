@@ -22,14 +22,15 @@ def login ():
     #     return redirect('/home')
     if request.method == 'POST':
         email = request.form.get('email')
-        Password  = request.form.get('Password')
+        Password  = request.form.get('psw')
+        print(email,Password)
         if not email or len(email) < 11:
             flash("Enter correct email", 'danger')
             return redirect('/')
         elif not Password:
             flash('Password is required', 'danger')
             return redirect('/')
-        elif session['isauth']:
+        elif 'isauth' in session and session['isauth']:
             return redirect('/home')
         # more like this
         else:
