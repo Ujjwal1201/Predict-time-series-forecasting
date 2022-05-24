@@ -42,6 +42,17 @@
 
 
 </div> -->
+
+<style>
+    .row.justify-content-center.my-auto {
+    width: 450px;
+}
+</style>
+
+<section class="h-100 bg-dark">
+<div class="container py-5 h-100">
+<div class="row d-flex justify-content-center align-items-center h-100" >
+<class class="col" >
 <div class="container px-4 py-5 mx-auto">
     <div class="card card0">
         <div class="d-flex flex-lg-row flex-column-reverse">
@@ -49,9 +60,11 @@
                 <div class="row justify-content-center my-auto">
                     <form method="post" class="col-md-8 col-10 my-5">
                         <div class="row justify-content-center px-3 mb-3">
-                            <img id="logo" src="https://i.imgur.com/PSXxjNY.png">
+                            <!-- <img id="logo" src="https://i.imgur.com/PSXxjNY.png"> -->
+                            <img id="logo" src="static/images/logo.png">
                         </div>
-                        <h3 class="mb-5 text-center heading"><b>Welcome to Predict</b></h3>
+                        <h3 class="mb-5 text-center heading">
+                            <b>Welcome to Predict</b></h3>
                         <p>The Time Series Forecasting</p>
 
                         <h6 class="msg-info">Please login to your account</h6>
@@ -78,18 +91,26 @@
                     </form>
                 </div>
                 <div class="bottom text-center mb-5">
-                    <p href="#" class="sm-text mx-auto mb-3">Don't have an account?<button
-                            class="btn btn-white ml-2">Create new</button></p>
+                    <a href="/register" style="text-decoration: none; color: black;" class="sm-text mx-auto mb-3">Don't have an account?
+                        <br><button
+                            class="btn btn-white ml-2">Create new</button></a>
                 </div>
             </div>
             <div class="card card2">
                 <div class="my-auto mx-md-5 px-md-5 right">
-                    <h3 class="text-white">Time Series Forecasting</h3>
-                    <small class="text-white">A time series is a sequence of observations taken sequentially in
-                        time.</small>
+                   <center> <h3 class="text-black">Time Series Forecasting</h3> </center>
+                   <marquee behavior="alternate" direction="left" scrollamount="3" style="background-color:aquamarine"><small class="text-black">A time series is a sequence of observations taken sequentially in
+                    time.</small></marquee> 
                 </div>
+                <img src="static/images/login.jpg.crdownload" width="791px" height="650px">
             </div>
         </div>
     </div>
 </div>
+
+</class>
+</div>
+</div>
+</section>
+
 {% endblock %}
