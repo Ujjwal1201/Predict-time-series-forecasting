@@ -58,23 +58,24 @@
                   style="border-top-left-radius: .25rem; border-bottom-left-radius: .25rem;" /> -->
                 <img src="static/images/image.jpg" width="680px" height="580px">
               </div>
+        {% include "notify.html" %}
               <div class="col-xl-6">
                 <div class="card-body p-md-5 text-black">
                   <h3 class="mb-5 text-uppercase">Predict Registration Form</h3>
   
                   <div class="row">
-                    <div class="col-md-6 mb-4">
+                    <div class="mb-3">
                       <div class="form-outline">
-                        <input type="text" id="form3Example1m" class="form-control form-control-lg" />
-                        <label class="form-label" for="form3Example1m">First name</label>
+                        <label class="form-label" for="username">Username</label>
+                        <input type="text" id="username" name="username" class="form-control form-control-lg" />
                       </div>
                     </div>
-                    <div class="col-md-6 mb-4">
+                    <!-- <div class="col-md-6 mb-4">
                       <div class="form-outline">
                         <input type="text" id="form3Example1n" class="form-control form-control-lg" />
                         <label class="form-label" for="form3Example1n">Last name</label>
                       </div>
-                    </div>
+                    </div> -->
                   </div>
                   <div class="mb-3">
                     <label for="email" class="form-label">E-mail</label>
@@ -99,10 +100,6 @@
     </div>
 </div>
 </div> 
-
-</div>
-</div>
-</div>
 </section>
 
 
