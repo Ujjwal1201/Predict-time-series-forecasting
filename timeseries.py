@@ -9,7 +9,6 @@ from sklearn.metrics import mean_squared_error, mean_absolute_error
 from timeseries import *
 plt.style.use('fivethirtyeight')
 
-
 def create_features(df, label=None):
     
     df['date'] = df.index
