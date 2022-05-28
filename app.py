@@ -1,3 +1,4 @@
+import json
 from werkzeug.utils import secure_filename
 from model_orm import User
 import os
@@ -6,6 +7,8 @@ from sqlalchemy.orm import sessionmaker
 from flask import Flask,render_template, request, flash, redirect, session, url_for
 import pandas as pd
 import timeseries as ts
+import plotly.graph_objects as go
+
 
 from model_orm import DataSet
 
@@ -35,16 +38,16 @@ def login():
             return redirect('/home')
         # more like this
         else:
-            db = opendb()
-            query = db.query(User).filter(User.email == email).first()
-            if query is not None and query.password == Password:        
-                session['isauth'] = True
-                session['id'] = True
-                session['name'] = True
-                flash('Login Successfull', 'success')
-                return redirect('/uploads')
-            else:
-                flash('There was an error while Logging in.','danger')
+            with opendb() as  db:
+                query = db.query(User).filter(User.email == email).first()
+                if query is not None and query.password == Password:        
+                    session['isauth'] = True
+                    session['id'] = True
+                    session['name'] = True
+                    flash('Login Successfull', 'success')
+                    return redirect('/uploads')
+                else:
+                    flash('There was an error while Logging in.','danger')
     return render_template('login.html')
 
 # @app.route('/forgot ' ,methods=["GET","POST"])
@@ -58,7 +61,6 @@ def register():
         username = request.form.get('username')
         confirm_password = request.form.get('confirm_password')
         password = request.form.get('password')
-        print(confirm_password, password, confirm_password==password)
         if username and password and confirm_password and email:
             if confirm_password != password:
                 flash('Password do not match','danger')
@@ -68,12 +70,15 @@ def register():
                 
                 if db.query(User).filter(User.email==email).first() is not None:
                     flash('Please use a different email address','danger')
+                    db.close()
                     return redirect('/register')
                 elif db.query(User).filter(User.username==username).first() is not None:
                     flash('Please use a different username','danger')
+                    db.close()
                     return redirect('/register')
                 elif db.query(User).filter(User.password==password).first() is not None:
                     flash('Please use a different password','danger')
+                    db.close()
                     return redirect('/register')
                 else:
                     user = User(username=username, email=email, password=password)  
@@ -82,7 +87,6 @@ def register():
                     db.close()
                     flash('Congratulations, you are now a registered user!','success')
                     return redirect(url_for('login'))
-                
         else:
             flash('Fill all the fields','danger')
             return redirect('/register')
@@ -150,7 +154,6 @@ def predict(id):
     sess=opendb()
     data = sess.query(DataSet).filter(DataSet.id==id).first()
     sess.commit()
-    print(data)
     df = pd.read_csv(data.filepath[1:])
     sess.close()
     columns = df.columns.tolist()
@@ -164,8 +167,10 @@ def train():
         session['col2'] = request.form.get('col2')
         flash("columns selected",'success')
         return redirect('/train')
-    
-    return render_template('train.html')
+    graphs = {}
+    if 'prediction_graph_1' in session:
+        graphs['prediction_graph_1'] = session['prediction_graph_1']
+    return render_template('train.html',graphs=graphs)
     
 @app.route('/train_timeseries')
 def train_timeseries():
@@ -180,7 +185,17 @@ def train_timeseries():
     X_train,X_test,y_train,y_test = ts.get_data(tdf,yc)
     model = ts.train(X_train,X_test,y_train,y_test)
     print('model trained')  
-    ts.predictTimeseries(model,tdf,yc)
+    out_df = ts.predictTimeseries(model,tdf,yc)
+    print(out_df.columns.tolist())
+    print(out_df.head())
+    fig = go.Figure()
+    fig.add_trace(go.Scatter(x=out_df.index,y=out_df[yc],name='actual'))
+    fig.add_trace(go.Scatter(x=out_df.index,y=out_df['Prediction'],name='prediction'))
+
+    fig.update_layout(title_text=f'Prediction of {yc}',xaxis_title=f'Time',yaxis_title=f'{yc}')
+    graph_file = f"static/graphs/{yc}_{xc}.html"
+    fig.write_html(graph_file, include_plotlyjs='cdn',full_html=False)
+    session['prediction_graph_1'] = graph_file
     return redirect('/train')
 
 @app.route('/delete/<int:id>')

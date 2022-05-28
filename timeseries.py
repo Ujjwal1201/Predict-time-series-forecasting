@@ -63,14 +63,8 @@ def predictTimeseries(reg, tdf, y_col):
     X_train, X_test, y_train, y_test = train_test_split(X,y,test_size=.3,shuffle=False)
     X_test['Prediction'] = reg.predict(X_test)
     X_test[y_col] = y_test
-    f, ax = plt.subplots(1)
-    f.set_figheight(5)
-    f.set_figwidth(15)
     X_train[y_col] = y_train
     X_all = pd.concat([X_test,X_train],sort=False)
-    print(X_all.head())
-    X_all[[y_col,'Prediction']].plot(ax=ax,style=['-','.'])
-    ax.set_ylim(X_all[y_col].max()*10)
-    plt.suptitle(' Forecast vs Actuals')
-        
+    return X_all
+   
     
