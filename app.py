@@ -29,10 +29,10 @@ def login():
         Password  = request.form.get('psw')
         print(email,Password)
         if not email or len(email) < 11:
-            flash("Enter correct email", 'danger')
+            flash("❌ Enter correct email", 'danger')
             return redirect('/')
         elif not Password:
-            flash('Password is required', 'danger')
+            flash('❌ Password is required', 'danger')
             return redirect('/')
         elif 'isauth' in session and session['isauth']:
             return redirect('/home')
@@ -47,7 +47,7 @@ def login():
                     flash('Login Successfull', 'success')
                     return redirect('/uploads')
                 else:
-                    flash('There was an error while Logging in.','danger')
+                    flash('❌ There was an error while Logging in.','danger')
     return render_template('login.html')
 
 # @app.route('/forgot ' ,methods=["GET","POST"])
@@ -63,21 +63,21 @@ def register():
         password = request.form.get('password')
         if username and password and confirm_password and email:
             if confirm_password != password:
-                flash('Password do not match','danger')
+                flash('❌ Password do not match','danger')
                 return redirect('/register')
             else:
                 db =opendb()
                 
                 if db.query(User).filter(User.email==email).first() is not None:
-                    flash('Please use a different email address','danger')
+                    flash('❌ Please use a different email address','danger')
                     db.close()
                     return redirect('/register')
                 elif db.query(User).filter(User.username==username).first() is not None:
-                    flash('Please use a different username','danger')
+                    flash('❌ Please use a different username','danger')
                     db.close()
                     return redirect('/register')
                 elif db.query(User).filter(User.password==password).first() is not None:
-                    flash('Please use a different password','danger')
+                    flash('❌ Please use a different password','danger')
                     db.close()
                     return redirect('/register')
                 else:
@@ -125,7 +125,7 @@ def uploadImage():
             session['uploaded_file'] = f"/static/uploads/{filename}"
             return redirect(request.url)
         else:
-            flash('wrong file selected, only csv, xlxs and json files allowed','danger')
+            flash('❌ Wrong file selected, only csv, xlxs and json files allowed','danger')
             return redirect(request.url)
    
     return render_template('upload.html',title='upload new Image')
@@ -199,8 +199,10 @@ def train_timeseries():
         graph_file = f"static/graphs/{yc}_{xc}.html"
         fig.write_html(graph_file, include_plotlyjs='cdn',full_html=False)
         session['prediction_graph_1'] = graph_file
-    except:
-        flash('Please select dataset file having Date-Time values.','danger')
+    except Exception as e:
+        flash('❌ Please select dataset file having Date-Time values.','danger')
+        flash('❌There was an error to load graph','danger')
+        
     return redirect('/train')
 
 @app.route('/delete/<int:id>')
@@ -212,7 +214,7 @@ def delete(id):
         sess.close()
         return redirect('/files')
     except Exception as e:
-        return f"There was a problem while deleting {e}"
+        return f" ❌ There was a problem while deleting {e}"
 
 
 if __name__ == '__main__':
