@@ -50,10 +50,6 @@ def login():
                     flash('❌ There was an error while Logging in.','danger')
     return render_template('login.html')
 
-# @app.route('/forgot ' ,methods=["GET","POST"])
-# def forgot():
-#     return render_template('forgot.html')
-
 @app.route('/register', methods=['GET','POST'])
 def register():
     if request.method=='POST':
@@ -88,7 +84,7 @@ def register():
                     flash('Congratulations, you are now a registered user!','success')
                     return redirect(url_for('login'))
         else:
-            flash('Fill all the fields','danger')
+            flash('❌ Fill all the fields','danger')
             return redirect('/register')
 
     return render_template('register.html', title='Sign Up page')
@@ -105,11 +101,11 @@ def uploadImage():
     if request.method == 'POST':
         print(request.files)
         if 'file' not in request.files:
-            flash('No file uploaded','danger')
+            flash('❌ No file uploaded','danger')
             return redirect(request.url)
         file = request.files['file']
         if file.filename == '':
-            flash('no file selected','danger')
+            flash('❌ no file selected','danger')
             return redirect(request.url)
         if file and allowed_files(file.filename):
             print(file.filename)
@@ -123,12 +119,12 @@ def uploadImage():
             db.commit()
             flash('file uploaded and saved','success')
             session['uploaded_file'] = f"/static/uploads/{filename}"
-            return redirect(request.url)
+            return redirect('/files')
         else:
             flash('❌ Wrong file selected, only csv, xlxs and json files allowed','danger')
             return redirect(request.url)
    
-    return render_template('upload.html',title='upload new Image')
+    return render_template('upload.html',title='upload file')
 
 
 @app.route('/files')
@@ -200,7 +196,7 @@ def train_timeseries():
         fig.write_html(graph_file, include_plotlyjs='cdn',full_html=False)
         session['prediction_graph_1'] = graph_file
     except Exception as e:
-        flash('❌ Please select dataset file having Date-Time values.','danger')
+        flash('Please select dataset file having Date-Time values.','danger')
         flash('❌There was an error to load graph','danger')
         
     return redirect('/train')
