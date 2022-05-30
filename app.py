@@ -157,6 +157,7 @@ def predict(id):
     df = pd.read_csv(data.filepath[1:])
     sess.close()
     columns = df.columns.tolist()
+    
     return render_template('column_selector.html',data=data,df = df.head().to_html(),col1 = columns,col2=columns)
 
 @app.route('/train',methods =['GET','POST'])
@@ -166,6 +167,7 @@ def train():
         session['filepath'] = request.form.get('filepath')
         session['col2'] = request.form.get('col2')
         flash("columns selected",'success')
+        
         return redirect('/train')
     graphs = {}
     if 'prediction_graph_1' in session:
@@ -177,25 +179,28 @@ def train_timeseries():
     xc = request.args.get('x')
     yc = request.args.get('y')
     f = request.args.get('f')[1:]
-    tdf = ts.load_csv(f,xc,yc)
-    print('dataframe loaded')
-    # print(tdf.head())
-    X,y = ts.create_features(tdf,yc)
-    # print(X.head(),y.head())
-    X_train,X_test,y_train,y_test = ts.get_data(tdf,yc)
-    model = ts.train(X_train,X_test,y_train,y_test)
-    print('model trained')  
-    out_df = ts.predictTimeseries(model,tdf,yc)
-    print(out_df.columns.tolist())
-    print(out_df.head())
-    fig = go.Figure()
-    fig.add_trace(go.Scatter(x=out_df.index,y=out_df[yc],name='actual'))
-    fig.add_trace(go.Scatter(x=out_df.index,y=out_df['Prediction'],name='prediction'))
+    try:
+        tdf = ts.load_csv(f,xc,yc)
+        print('dataframe loaded')
+        # print(tdf.head())
+        X,y = ts.create_features(tdf,yc)
+        # print(X.head(),y.head())
+        X_train,X_test,y_train,y_test = ts.get_data(tdf,yc)
+        model = ts.train(X_train,X_test,y_train,y_test)
+        print('model trained')  
+        out_df = ts.predictTimeseries(model,tdf,yc)
+        print(out_df.columns.tolist())
+        print(out_df.head())
+        fig = go.Figure()
+        fig.add_trace(go.Scatter(x=out_df.index,y=out_df[yc],name='actual'))
+        fig.add_trace(go.Scatter(x=out_df.index,y=out_df['Prediction'],name='prediction'))
 
-    fig.update_layout(title_text=f'Prediction of {yc}',xaxis_title=f'Time',yaxis_title=f'{yc}')
-    graph_file = f"static/graphs/{yc}_{xc}.html"
-    fig.write_html(graph_file, include_plotlyjs='cdn',full_html=False)
-    session['prediction_graph_1'] = graph_file
+        fig.update_layout(title_text=f'Prediction of {yc}',xaxis_title=f'Time',yaxis_title=f'{yc}')
+        graph_file = f"static/graphs/{yc}_{xc}.html"
+        fig.write_html(graph_file, include_plotlyjs='cdn',full_html=False)
+        session['prediction_graph_1'] = graph_file
+    except:
+        flash('bla','danger')
     return redirect('/train')
 
 @app.route('/delete/<int:id>')
