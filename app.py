@@ -200,7 +200,7 @@ def train_timeseries():
         fig.write_html(graph_file, include_plotlyjs='cdn',full_html=False)
         session['prediction_graph_1'] = graph_file
     except:
-        flash('bla','danger')
+        flash('Please select dataset file having Date-Time values.','danger')
     return redirect('/train')
 
 @app.route('/delete/<int:id>')
